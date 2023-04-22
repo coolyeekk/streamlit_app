@@ -1,0 +1,7 @@
+covid
+numpy
+pandas
+plotly
+streamlit
+tensorflow
+matplotlib
