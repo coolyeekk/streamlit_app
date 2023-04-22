@@ -1,0 +1,8 @@
+covid
+numpy
+pandas
+plotly
+streamlit
+tensorflow
+matplotlib
+scikit-learn==<0.24.2>
