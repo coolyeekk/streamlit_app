@@ -19,7 +19,7 @@ st.markdown("---")
 
 st.markdown("<p style='text-align: justify;'>hi</p>", unsafe_allow_html=True)
 
-st.markdown("<h4 style='text-align: justify; color: blue;'>This dashboard is an effort to analyze the cumulative data of Cases new,Active cases, deaths and recovered over time.</h4>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: justify; color: blue;'>This dashboard is an effort to analyze the cumulative data of New Cases, Active Cases, Deaths and Recovered over time.</h4>", unsafe_allow_html=True)
 
 
 st.markdown("<h2 style='text-align: center;'>CASES ACROSS Malaysia</h2>",
@@ -30,9 +30,9 @@ st.markdown("<h2 style='text-align: center;'>CASES ACROSS Malaysia</h2>",
 con, rec, det, act = st.beta_columns(4)
 
 with con:
-    st.markdown("<h3 style='text-align: center;'>Cases Total</h3>",
+    st.markdown("<h3 style='text-align: center;'>New Cases</h3>",
                 unsafe_allow_html=True)
-    num1 = df['cases_total'].sum()
+    num1 = df['cases_new'][0]
     st.markdown(
         f"<h2 style='text-align: center; color: blue;'>{num1}</h2>", unsafe_allow_html=True)
 
@@ -44,16 +44,16 @@ with rec:
         f"<h2 style='text-align: center; color: green;'>{num2}</h2>", unsafe_allow_html=True)
 
 with det:
-    st.markdown("<h3 style='text-align: center;'>New Deaths Cases</h3>",
+    st.markdown("<h3 style='text-align: center;'>Total Deaths</h3>",
                 unsafe_allow_html=True)
     num3 = df['deaths'].sum()
     st.markdown(
         f"<h2 style='text-align: center; color: red;'>{num3}</h2>", unsafe_allow_html=True)
 
 with act:
-    st.markdown("<h3 style='text-align: center;'>Active Cases</h3>",
+    st.markdown("<h3 style='text-align: center;'>Total Cases</h3>",
                 unsafe_allow_html=True)
-    num3 = df['cases_total'].sum()
+    num3 = df['cases_active'][0]
     st.markdown(
         f"<h2 style='text-align: center; color: orange;'>{num3}</h2>", unsafe_allow_html=True)
 
