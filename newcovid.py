@@ -44,7 +44,7 @@ with rec:
         f"<h2 style='text-align: center; color: green;'>{num2}</h2>", unsafe_allow_html=True)
 
 with det:
-    st.markdown("<h3 style='text-align: center;'>Deceased Cases</h3>",
+    st.markdown("<h3 style='text-align: center;'>New Deaths Cases</h3>",
                 unsafe_allow_html=True)
     num3 = df['deaths'][0]
     st.markdown(
@@ -53,7 +53,7 @@ with det:
 with act:
     st.markdown("<h3 style='text-align: center;'>Active Cases</h3>",
                 unsafe_allow_html=True)
-    num3 = df['cases_active'][0]
+    num3 = df['cases_total'][0]
     st.markdown(
         f"<h2 style='text-align: center; color: orange;'>{num3}</h2>", unsafe_allow_html=True)
 
