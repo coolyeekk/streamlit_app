@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 df = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 df.drop(["cluster", "district", "date_announced","date_last_onset", "category", "status",
          "cases_total", "tests", "icu", "summary_bm", "summary_en"], axis=1, inplace=True)
-df = df[df["Confirmed"] != 0]
+df = df[df["cases_active"] != 0]
 
 df['Date'] = df['Last_Updated_Time'].astype('datetime64[ns]')
 
