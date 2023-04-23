@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 df = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 df.drop(["cluster", "district", "date_announced","date_last_onset", "category", "status",
          "cases_total", "tests", "icu", "summary_bm", "summary_en"], axis=1, inplace=True)
-df = df[df["cases_new"] != 0]
+df = df[df["cases_total"] != 0]
 
 st.set_page_config(page_title='Streamlit Dashboard',
                    layout='wide',
@@ -30,9 +30,9 @@ st.markdown("<h2 style='text-align: center;'>CASES ACROSS Malaysia</h2>",
 con, rec, det, act = st.beta_columns(4)
 
 with con:
-    st.markdown("<h3 style='text-align: center;'>New Cases</h3>",
+    st.markdown("<h3 style='text-align: center;'>Cases Total</h3>",
                 unsafe_allow_html=True)
-    num1 = df['cases_new'][0]
+    num1 = df['cases_total'][0]
     st.markdown(
         f"<h2 style='text-align: center; color: blue;'>{num1}</h2>", unsafe_allow_html=True)
 
