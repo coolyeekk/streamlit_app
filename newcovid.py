@@ -74,7 +74,7 @@ first_chart, second_chart = st.beta_columns(2)
 
 with first_chart:
     fig = px.line(df1, x=pd.to_datetime(df1["date_announced"]).dt.strftime('%b %d %Y'), 
-              y=[ "cases_new", "tests"], 
+              y=["cases_new", "tests"], 
               title="Total New Case vs Test out Positivity Rate",
               line_color=["blue", "green"])
 
