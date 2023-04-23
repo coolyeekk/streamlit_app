@@ -24,9 +24,6 @@ st.markdown("<h4 style='text-align: justify; color: blue;'>This dashboard is an 
 
 now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-st.markdown(
-    f"<h2 style='text-align: center; color: blue;'>{num1}</h2>", unsafe_allow_html=True)
-
 st.markdown(f"<p style='text-align: center;'>Current time: {now}</p>", unsafe_allow_html=True)
 
 st.markdown("<h2 style='text-align: center;'>CASES ACROSS Malaysia</h2>",
