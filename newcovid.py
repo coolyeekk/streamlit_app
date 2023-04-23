@@ -22,12 +22,11 @@ st.markdown("<p style='text-align: justify;'>hi</p>", unsafe_allow_html=True)
 
 st.markdown("<h4 style='text-align: justify; color: blue;'>This dashboard is an effort to analyze the cumulative data of New Cases, Active Cases, Deaths and Recovered over time.</h4>", unsafe_allow_html=True)
 
+st.markdown("<h2 style='text-align: center;'>CASES ACROSS Malaysia</h2>",
+            unsafe_allow_html=True)
 now = datetime.now().strftime("%d/%m/%Y")
 
 st.markdown(f"<p style='text-align: center;'>Current Date: {now}</p>", unsafe_allow_html=True)
-
-st.markdown("<h2 style='text-align: center;'>CASES ACROSS Malaysia</h2>",
-            unsafe_allow_html=True)
 
 # kpi 1
 
@@ -74,8 +73,8 @@ st.markdown("<h2 style='text-align: center;'>Visualizing Total and Daily Cases</
 first_chart, second_chart = st.beta_columns(2)
 
 with first_chart:
-    fig = px.line(df1, x="Date", y=["Total Confirmed",
-                                    "Total Deceased", "Total Recovered"], title="Total Confirmed, Recovered and Deceased")
+    fig = px.line(df1, x="date_announced", y=["cases_total",
+                                    "cases_new", "cases_active"], title="Total Confirmed, new and active")
     fig.update_layout(height=600)
     st.plotly_chart(fig, use_container_width=True)
 
