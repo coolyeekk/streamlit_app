@@ -73,13 +73,13 @@ st.markdown("<h2 style='text-align: center;'>Visualizing Total and Daily Cases</
 first_chart, second_chart = st.beta_columns(2)
 
 with first_chart:
-    fig = px.line(df1, x="date_announced", y=["cases_total",
+    fig = px.line(df1, x="date_last_onset", y=["cases_total",
                                     "cases_new", "cases_active"], title="Total Confirmed, new and active")
     fig.update_layout(height=600)
     st.plotly_chart(fig, use_container_width=True)
 
 with second_chart:
-    fig = px.line(df1, x="Date", y=["Daily Confirmed",
+    fig = px.line(df1, x="date_last_onset", y=["Daily Confirmed",
                                     "Daily Deceased", "Daily Recovered"], title="Daily Confirmed, Recovered and Deceased")
     fig.update_layout(height=600)
     st.plotly_chart(fig, use_container_width=True)
