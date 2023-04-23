@@ -53,7 +53,7 @@ with det:
 with act:
     st.markdown("<h3 style='text-align: center;'>Total Cases</h3>",
                 unsafe_allow_html=True)
-    num3 = df['cases_active'][0]
+    num3 = df['cases_total'].sum()
     st.markdown(
         f"<h2 style='text-align: center; color: orange;'>{num3}</h2>", unsafe_allow_html=True)
 
