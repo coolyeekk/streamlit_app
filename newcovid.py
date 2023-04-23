@@ -24,9 +24,6 @@ st.markdown("<h4 style='text-align: justify; color: blue;'>This dashboard is an 
 
 now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-st.markdown("<h3 style='text-align: center;'>New Cases</h3>",
-            unsafe_allow_html=True)
-num1 = df['cases_new'][0]
 st.markdown(
     f"<h2 style='text-align: center; color: blue;'>{num1}</h2>", unsafe_allow_html=True)
 
