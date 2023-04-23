@@ -22,9 +22,9 @@ st.markdown("<p style='text-align: justify;'>hi</p>", unsafe_allow_html=True)
 
 st.markdown("<h4 style='text-align: justify; color: blue;'>This dashboard is an effort to analyze the cumulative data of New Cases, Active Cases, Deaths and Recovered over time.</h4>", unsafe_allow_html=True)
 
-now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+now = datetime.now().strftime("%d/%m/%Y")
 
-st.markdown(f"<p style='text-align: center;'>Current time: {now}</p>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align: center;'>Current Date: {now}</p>", unsafe_allow_html=True)
 
 st.markdown("<h2 style='text-align: center;'>CASES ACROSS Malaysia</h2>",
             unsafe_allow_html=True)
