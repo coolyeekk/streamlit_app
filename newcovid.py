@@ -8,7 +8,7 @@ df.drop(["cluster", "district", "date_announced","date_last_onset", "category", 
          "cases_total", "tests", "icu", "summary_bm", "summary_en"], axis=1, inplace=True)
 df = df[df["cases_active"] != 0]
 
-df['Date'] = df['date_announced'].astype('datetime64[ns]')
+df['Date'] = df['date_announced'].astype('datetime64[D]')
 
 st.set_page_config(page_title='Streamlit Dashboard',
                    layout='wide',
