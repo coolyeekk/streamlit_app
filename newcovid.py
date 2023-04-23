@@ -1,34 +1,152 @@
+import streamlit as st
 import pandas as pd
 import plotly.express as px
-import streamlit as st
+import plotly.graph_objects as go
 
-#load data
-df = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv")
+df = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
+df.drop(["cluster", "district", "date_announced","date_last_onset", "category", "status",
+         "cases_total", "tests", "icu", "summary_bm", "summary_en"], axis=1, inplace=True)
+df = df[df["Confirmed"] != 0]
 
-#convert date strings to datetime
-df['date'] = pd.to_datetime(df['date'])
+df['Date'] = df['Last_Updated_Time'].astype('datetime64[ns]')
 
-#load state and district boundaries data from GeoJSON file
-geojson = pd.read_json("https://raw.githubusercontent.com/jaspajjr/malaysia-geojson/main/malaysia.geojson")
+st.set_page_config(page_title='Streamlit Dashboard',
+                   layout='wide',
+                   page_icon='💹')
 
-#merge GeoJSON data with Covid-19 cases data
-merged_df = pd.merge(df, geojson, how='left', left_on=['state', 'district'], right_on=['properties.name_1', 'properties.name_2'])
+st.markdown("<h1 style='text-align: center; color: red;'>Covid-19 Cases by State and District in Malaysia</h1>",
+            unsafe_allow_html=True)
 
-#filter data to only include selected date
-selected_date = st.slider('Select a date', min_value=min(merged_df['date']), max_value=max(merged_df['date']), value=max(merged_df['date']))
-filtered_df = merged_df[merged_df['date'] == selected_date]
+st.markdown("---")
 
-#group cases by state and district
-grouped_df = filtered_df.groupby(['properties.name_1', 'properties.name_2'])['cases_new'].sum().reset_index()
+st.markdown("<p style='text-align: justify;'>hi</p>", unsafe_allow_html=True)
 
-#create choropleth map with plotly
-fig = px.choropleth_mapbox(grouped_df, geojson=geojson, locations=['properties.name_1', 'properties.name_2'],
-                           color='cases_new', mapbox_style="carto-positron", zoom=5, center={"lat": 4.2105, "lon": 101.9758},
-                           opacity=0.5, range_color=[0, max(grouped_df['cases_new'])])
+st.markdown("<h4 style='text-align: justify; color: blue;'>This dashboard is an effort to analyze the cumulative data of Cases new,Active cases, deaths and recovered over time.</h4>", unsafe_allow_html=True)
 
-#add title and colorbar legend
-fig.update_layout(title_text='Covid-19 Cases by State and District in Malaysia',
-                  coloraxis_colorbar=dict(title='New Cases'))
 
-#display the plotly chart on the streamlit UI
-st.plotly_chart(fig)
+st.markdown("<h2 style='text-align: center;'>CASES ACROSS Malaysia</h2>",
+            unsafe_allow_html=True)
+
+# kpi 1
+
+con, rec, det, act = st.beta_columns(4)
+
+with con:
+    st.markdown("<h3 style='text-align: center;'>Confirmed Cases</h3>",
+                unsafe_allow_html=True)
+    num1 = df['cases_new'][0]
+    st.markdown(
+        f"<h2 style='text-align: center; color: blue;'>{num1}</h2>", unsafe_allow_html=True)
+
+with rec:
+    st.markdown("<h3 style='text-align: center;'>Recovered Cases</h3>",
+                unsafe_allow_html=True)
+    num2 = df['recovered'][0]
+    st.markdown(
+        f"<h2 style='text-align: center; color: green;'>{num2}</h2>", unsafe_allow_html=True)
+
+with det:
+    st.markdown("<h3 style='text-align: center;'>Deceased Cases</h3>",
+                unsafe_allow_html=True)
+    num3 = df['deaths'][0]
+    st.markdown(
+        f"<h2 style='text-align: center; color: red;'>{num3}</h2>", unsafe_allow_html=True)
+
+with act:
+    st.markdown("<h3 style='text-align: center;'>Active Cases</h3>",
+                unsafe_allow_html=True)
+    num3 = df['cases_active'][0]
+    st.markdown(
+        f"<h2 style='text-align: center; color: orange;'>{num3}</h2>", unsafe_allow_html=True)
+
+st.markdown("---")
+
+# kpi2
+
+df1 = pd.read_csv(
+    "https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
+
+st.markdown("<h2 style='text-align: center;'>Visualizing Total and Daily Cases</h2>",
+            unsafe_allow_html=True)
+
+first_chart, second_chart = st.beta_columns(2)
+
+with first_chart:
+    fig = px.line(df1, x="date_announced", y=["Total Confirmed",
+                                    "Total Deceased", "Total Recovered"], title="Total Confirmed, Recovered and Deceased")
+    fig.update_layout(height=600)
+    st.plotly_chart(fig, use_container_width=True)
+
+with second_chart:
+    fig = px.line(df1, x="date_announced", y=["Daily Confirmed",
+                                    "Daily Deceased", "Daily Recovered"], title="Daily Confirmed, Recovered and Deceased")
+    fig.update_layout(height=600)
+    st.plotly_chart(fig, use_container_width=True)
+
+st.markdown("---")
+
+# kpi3
+
+st.markdown("<h2 style='text-align: center;'>Visualizing top 5 States</h2>",
+            unsafe_allow_html=True)
+
+df2 = df[1:].sort_values('Confirmed', ascending=False)
+
+fig = go.Figure(data=[
+    go.Bar(name='Confirmed',
+                x=df2['State'][:5], y=df2['Confirmed'][:5]),
+    go.Bar(name='Deaths',
+                x=df2['State'][:5], y=df2['Deaths'][:5]),
+    go.Bar(name='Recovered',
+                x=df2['State'][:5], y=df2['Recovered'][:5]), ])
+st.plotly_chart(fig, use_container_width=True)
+
+
+first_chart, second_chart = st.beta_columns(2)
+
+with first_chart:
+    st.markdown("<h3 style='text-align: center;'>Total Confirmed Cases</h3>",
+                unsafe_allow_html=True)
+    fig = px.pie(df2, values=df2["Confirmed"][:5],
+                 names=df2['State'][:5])
+    st.plotly_chart(fig)
+
+with second_chart:
+    st.markdown("<h3 style='text-align: center;'>Total Recovered Cases</h3>",
+                unsafe_allow_html=True)
+    fig = px.pie(df2, values=df2["Recovered"][:5],
+                 names=df2['State'][:5])
+    st.plotly_chart(fig)
+
+
+first_chart, second_chart = st.beta_columns(2)
+
+with first_chart:
+    st.markdown("<h3 style='text-align: center;'>Total Active Cases</h3>",
+                unsafe_allow_html=True)
+    fig = px.pie(df2, values=df2["Active"][:5],
+                 names=df2['State'][:5])
+    st.plotly_chart(fig)
+
+with second_chart:
+    st.markdown("<h3 style='text-align: center;'>Total Deceased Cases</h3>",
+                unsafe_allow_html=True)
+    fig = px.pie(df2, values=df2["Deaths"][:5],
+                 names=df2['State'][:5])
+    st.plotly_chart(fig)
+
+# Scattermap
+lat_lon = pd.read_csv("lat_lon_india.csv")
+df.drop(0, axis=0, inplace=True)
+df.reset_index(drop=True, inplace=True)
+df["lat"] = lat_lon['latitude']
+df["lon"] = lat_lon['longitude']
+
+fig = px.scatter_mapbox(df, lat="lat", lon="lon", hover_name="State", hover_data=["Confirmed", "Recovered", "Deaths", "Active"],
+                        color_discrete_sequence=["darkblue"], zoom=4, height=700)
+
+fig.update_layout(mapbox_style="open-street-map")
+fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+st.markdown("<h2 style='text-align: center;'>State-wise detailed Scattermap</h2>",
+            unsafe_allow_html=True)
+st.plotly_chart(fig, use_container_width=True)
