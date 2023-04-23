@@ -270,11 +270,11 @@ vf.date = pd.to_datetime(vf.date).dt.date
 vf = vf.groupby(['date']).sum().cumsum().reset_index()
 
 # Add unvax columns, subtract partial
-for c in list(pop_age.keys()): 
-    vf['unvax_' + c] = pop_age[c] - vf['partial_' + c]
+for c in list(pop_age.age): 
+    vf['unvax_' + c] = pop_age[pop_age.age==c]['pop_age'].item() - vf['partial_' + c]
     vf['partial_' + c] = vf['partial_' + c] - vf['full_' + c]
     vf['full_' + c] = vf['full_' + c] - vf['booster_' + c]
-    
+
 # Shift vax columns per definitions of partial, full, boosted
 for c in [x for x in vf.columns if 'partial' in x]: vf[c] = vf[c].shift(1).fillna(0).astype(int)
 for c in [x for x in vf.columns if 'full' in x]: vf[c] = vf[c].shift(14).fillna(0).astype(int)
@@ -282,52 +282,52 @@ for c in [x for x in vf.columns if 'booster' in x]: vf[c] = vf[c].shift(7).filln
 
 # Get mean across period and transpose to merge with deaths df
 vf = vf[(vf.date >= date_min) & (vf.date <= date_max)]
-vf.drop(['date'],axis=1,inplace=True)
+vf.drop(['date'], axis=1, inplace=True)
 vf.loc['pop'] = vf.mean(numeric_only=True).abs()
 vf = vf[vf.index == 'pop'].transpose().reset_index().rename(columns={'index':'cat'})
 vf[['status','age']] = vf['cat'].str.split('_', 1, expand=True)
 vf.status = vf.status.replace({'partial':'partialvax', 'full':'fullyvax', 'booster':'boosted'})
 vf = vf[~vf.status.isin(['partialvax'])][['age','status','pop']].sort_values(by=['age','status']).reset_index(drop=True)
 
-vf.head(len(vf))
-
 # Merge frames and compute incidence, then pivot , on=['date','status']
-df5 = pd.merge(df5,vf, how='left')
-df5['capita'] = df5.deaths/df5['pop'] * 100000
-df5 = df5.pivot(index='age', columns='status', values=['capita']).fillna(0).reset_index()
-df5.columns = ['age','Boosted','Fully Vaccinated','Unvaccinated']
-df5 = df5[['age','Unvaccinated','Fully Vaccinated','Boosted']]
-df5.head(len(df5))
+df5 = pd.merge(df4, vf, how='left')
+df5['capita'] = df5.mortality / df5['pop'] * 100000
+df5 = df5.pivot_table(index='age', columns='status', values='capita').fillna(0).reset_index()
+df5.columns = ['Age','Unvaccinated','Fully Vaccinated','Boosted']
+df5 = df5[['Age','Unvaccinated','Fully Vaccinated','Boosted']]
 
-# Chart
+# Function for comma separator
 def commaSep(x, pos): return ('{:,}'.format(x)).replace('.0', '')
 
+# Streamlit App
+st.title('Mortality rate per 100k people based on vaccination status')
+
+# Display dataframe
+st.write('Here is a sample of the mortality rate data by age group and vaccination status:')
+st.write(df5)
+
+# Display chart
 plt.rcParams.update({'font.size': 8,
                      'font.family':'sans-serif',
                      'grid.linestyle':'dashed'})
 plt.rcParams["figure.figsize"] = [8,7]
 plt.rcParams["figure.autolayout"] = True
 fig, ax = plt.subplots()
-
-df5.plot(x='age', y=['Unvaccinated','Fully Vaccinated','Boosted'], kind='bar', 
+df5.plot(x='Age', y=['Unvaccinated','Fully Vaccinated','Boosted'], kind='bar', 
         color=['#FF8000','#66FFFF','#FF33FF'],
         align='center',
         width=0.7,linewidth=0.3,
         edgecolor='black',ax=ax)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
-
 ax.yaxis.grid(True)
 ax.set_axisbelow(True)
 ax.legend(loc='upper center', bbox_to_anchor=(0.2, 0.95), ncol=1, labelspacing = 1.5, frameon=True, fancybox=True)
 plt.xticks(rotation=0)
 ax.yaxis.set_major_formatter(tkr.FuncFormatter(commaSep))
 plt.tick_params(bottom=False)
-
-plt.title('Mortality rate per 100k people based on vaccination status \n\n' + 
-          '(data from ' + date_min.strftime('%d-%b') + ' to ' + date_max.strftime('%d-%b') + ')')
+plt.title('Mortality rate per 100k people based on vaccination status\n\n (data from ' + date_min.strftime('%d-%b') + ' to ' + date_max.strftime('%d-%b') + ')')
 plt.xlabel('')
 plt.ylabel('')
-
-# Display the chart in the Streamlit app.
-st.pyplot(figure)
+plt.tight_layout()
+st.pyplot(fig)
