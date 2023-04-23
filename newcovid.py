@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from datetime import datetime
 
 df = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 df.drop(["cluster", "district", "date_announced","date_last_onset", "category", "status",
@@ -21,6 +22,15 @@ st.markdown("<p style='text-align: justify;'>hi</p>", unsafe_allow_html=True)
 
 st.markdown("<h4 style='text-align: justify; color: blue;'>This dashboard is an effort to analyze the cumulative data of New Cases, Active Cases, Deaths and Recovered over time.</h4>", unsafe_allow_html=True)
 
+now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+st.markdown("<h3 style='text-align: center;'>New Cases</h3>",
+            unsafe_allow_html=True)
+num1 = df['cases_new'][0]
+st.markdown(
+    f"<h2 style='text-align: center; color: blue;'>{num1}</h2>", unsafe_allow_html=True)
+
+st.markdown(f"<p style='text-align: center;'>Current time: {now}</p>", unsafe_allow_html=True)
 
 st.markdown("<h2 style='text-align: center;'>CASES ACROSS Malaysia</h2>",
             unsafe_allow_html=True)
