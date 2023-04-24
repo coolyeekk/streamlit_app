@@ -120,7 +120,7 @@ fig = go.Figure(data=[active_cases, new_cases, recovered_cases])
 fig.update_layout(title=f"COVID-19 Cases in {state_selected}", xaxis_title="Date", yaxis_title="Number of Cases")
 
 # Display the plot
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, layout={'width': 600, 'height': 600})))
 
 
 
@@ -149,21 +149,21 @@ with st.beta_container():
 # Display Total Recovered Pie Chart
 with st.beta_container():
     st.write("COVID-19 Total Recovered by State")
-    col1, col2 = st.beta_columns([2, 10])
+    col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[total_recovered], layout={'width': None}))
 
 # Display Total Deaths Pie Chart
 with st.beta_container():
     st.write("COVID-19 Total Deaths by State")
-    col1, col2 = st.beta_columns([2, 10])
+    col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[total_deaths], layout={'width': None}))
 
 # Display New Cases Pie Chart
 with st.beta_container():
     st.write("COVID-19 New Cases by State")
-    col1, col2 = st.beta_columns([2, 10])
+    col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[new_cases], layout={'width': None}))
 
