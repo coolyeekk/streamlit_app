@@ -94,6 +94,31 @@ st.markdown("---")
 
 # kpi3
 
+# Read data from MoH Malaysia dataset
+df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv")
+
+# Sort data by number of active cases
+df2 = df_state.sort_values('cases_active', ascending=False).reset_index(drop=True)
+
+# Create a bar chart to visualize top 5 states by active cases, deaths, and recovered cases
+fig = go.Figure(data=[
+    go.Bar(name='Active Cases',
+                x=df2['state'][:5], y=df2['cases_active'][:5]),
+    go.Bar(name='Deaths',
+                x=df2['state'][:5], y=df2['cases_new'][:5]),
+    go.Bar(name='Recovered',
+                x=df2['state'][:5], y=df2['cases_recovered'][:5])
+])
+
+# Set title and axis labels for the chart
+fig.update_layout(title='Top 5 States with Most COVID-19 Cases',
+                   xaxis_title='States',
+                   yaxis_title='Number of Cases')
+
+# Display the chart in Streamlit app
+st.plotly_chart(fig, use_container_width=True)
+
+
 st.markdown("<h2 style='text-align: center;'>Visualizing top 5 States</h2>",
             unsafe_allow_html=True)
 
