@@ -128,14 +128,14 @@ st.plotly_chart(fig, use_container_width=True)
 df_clusters = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 
 # Group data by state and calculate the sum of cases, recoveries, deaths, and new cases
-state_grouped = df_clusters.groupby('district').agg({'classification_new': 'sum', 'classification_recovered': 'sum', 'classification_deceased': 'sum', 'classification_import': 'sum'}).reset_index()
-state_grouped = state_grouped.sort_values('classification_new', ascending=False).head(5)
+state_grouped = df_clusters.groupby('district').agg({'cases_total': 'sum', 'recovered': 'sum', 'deaths': 'sum', 'cases_new': 'sum'}).reset_index()
+state_grouped = state_grouped.sort_values('cases_total', ascending=False).head(5)
 
 # Create pie chart data for each case type
-total_cases = go.Pie(labels=state_grouped['state'], values=state_grouped['classification_new'], name='Total Cases')
-total_recovered = go.Pie(labels=state_grouped['state'], values=state_grouped['classification_recovered'], name='Total Recovered')
-total_deaths = go.Pie(labels=state_grouped['state'], values=state_grouped['classification_deceased'], name='Total Deaths')
-new_cases = go.Pie(labels=state_grouped['state'], values=state_grouped['classification_import'], name='New Cases')
+total_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases_total'], name='Total Cases')
+total_recovered = go.Pie(labels=state_grouped['district'], values=state_grouped['recovered'], name='Total Recovered')
+total_deaths = go.Pie(labels=state_grouped['district'], values=state_grouped['deaths'], name='Total Deaths')
+new_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases_new'], name='New Cases')
 
 # Create figure layout and add pie chart data
 fig = make_subplots(rows=2, cols=2, specs=[[{'type':'domain'}, {'type':'domain'}], [{'type':'domain'}, {'type':'domain'}]])
