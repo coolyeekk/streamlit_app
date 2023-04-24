@@ -141,21 +141,36 @@ new_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases
 # Display Total Cases Pie Chart
 fig1 = go.Figure(data=[total_cases])
 fig1.update_layout(title='COVID-19 Total Cases by State')
-fig1.show()
+st.plotly_chart(fig1)
 
 # Display Total Recovered Pie Chart
 fig2 = go.Figure(data=[total_recovered])
 fig2.update_layout(title='COVID-19 Total Recovered by State')
-fig2.show()
+st.plotly_chart(fig2)
 
 # Display Total Deaths Pie Chart
 fig3 = go.Figure(data=[total_deaths])
 fig3.update_layout(title='COVID-19 Total Deaths by State')
-fig3.show()
+st.plotly_chart(fig3)
 
 # Display New Cases Pie Chart
 fig4 = go.Figure(data=[new_cases])
 fig4.update_layout(title='COVID-19 New Cases by State')
-fig4.show()
+st.plotly_chart(fig4)
 
 
+# Scattermap
+lat_lon = pd.read_csv("lat_lon_india.csv")
+df.drop(0, axis=0, inplace=True)
+df.reset_index(drop=True, inplace=True)
+df["lat"] = lat_lon['latitude']
+df["lon"] = lat_lon['longitude']
+
+fig = px.scatter_mapbox(df, lat="lat", lon="lon", hover_name="State", hover_data=["Confirmed", "Recovered", "Deaths", "Active"],
+                        color_discrete_sequence=["darkblue"], zoom=4, height=700)
+
+fig.update_layout(mapbox_style="open-street-map")
+fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+st.markdown("<h2 style='text-align: center;'>State-wise detailed Scattermap</h2>",
+            unsafe_allow_html=True)
+st.plotly_chart(fig, use_container_width=True)
