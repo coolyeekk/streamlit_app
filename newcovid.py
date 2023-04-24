@@ -133,31 +133,38 @@ state_grouped = df_clusters.groupby('district').agg({'cases_total': 'sum', 'reco
 state_grouped = state_grouped.sort_values('cases_total', ascending=False).head(5)
 
 # Create pie chart data for each case type
-state_grouped['district_short'] = state_grouped['district'].str[:8] + '...'
 total_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases_total'], name='Total Cases')
 total_recovered = go.Pie(labels=state_grouped['district'], values=state_grouped['recovered'], name='Total Recovered')
 total_deaths = go.Pie(labels=state_grouped['district'], values=state_grouped['deaths'], name='Total Deaths')
 new_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases_new'], name='New Cases')
 
 # Display Total Cases Pie Chart
-fig1 = go.Figure(data=[total_cases])
-fig1.update_layout(title='COVID-19 Total Cases by State')
-st.plotly_chart(fig1, use_container_width=True)
+with st.beta_container():
+    st.write("COVID-19 Total Cases by State")
+    col1, col2 = st.beta_columns([2, 5])
+    col1.markdown("&nbsp;")
+    col2.plotly_chart(go.Figure(data=[total_cases]))
 
 # Display Total Recovered Pie Chart
-fig2 = go.Figure(data=[total_recovered])
-fig2.update_layout(title='COVID-19 Total Recovered by State')
-st.plotly_chart(fig2, use_container_width=True)
+with st.beta_container():
+    st.write("COVID-19 Total Recovered by State")
+    col1, col2 = st.beta_columns([2, 5])
+    col1.markdown("&nbsp;")
+    col2.plotly_chart(go.Figure(data=[total_recovered]))
 
 # Display Total Deaths Pie Chart
-fig3 = go.Figure(data=[total_deaths])
-fig3.update_layout(title='COVID-19 Total Deaths by State')
-st.plotly_chart(fig3, use_container_width=True)
+with st.beta_container():
+    st.write("COVID-19 Total Deaths by State")
+    col1, col2 = st.beta_columns([2, 5])
+    col1.markdown("&nbsp;")
+    col2.plotly_chart(go.Figure(data=[total_deaths]))
 
 # Display New Cases Pie Chart
-fig4 = go.Figure(data=[new_cases])
-fig4.update_layout(title='COVID-19 New Cases by State')
-st.plotly_chart(fig4, use_container_width=True)
+with st.beta_container():
+    st.write("COVID-19 New Cases by State")
+    col1, col2 = st.beta_columns([2, 5])
+    col1.markdown("&nbsp;")
+    col2.plotly_chart(go.Figure(data=[new_cases]))
 
 
 # Scattermap
