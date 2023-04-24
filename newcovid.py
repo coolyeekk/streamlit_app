@@ -106,12 +106,16 @@ state_selected = st.selectbox('Select a state:', state_options)
 # Filter data for the selected state
 state_data = df_state[df_state['state'] == state_selected]
 
+# Calculate the sum of active cases, new cases, and recovered cases for the selected state
+active_cases_sum = state_data['cases_active'].sum()
+new_cases_sum = state_data['cases_new'].sum()
+recovered_sum = state_data['cases_recovered'].sum()
+
 # Display the COVID-19 stats for the selected state
 st.write(f"**{state_selected}**")
-st.write("Active Cases: ", state_data['cases_active'].values[0])
-st.write("New Cases: ", state_data['cases_new'].values[0])
-st.write("Recovered: ", state_data['cases_recovered'].values[0])
-
+st.write("Active Cases: ", active_cases_sum)
+st.write("New Cases: ", new_cases_sum)
+st.write("Recovered: ", recovered_sum)
 
 first_chart, second_chart = st.beta_columns(2)
 
