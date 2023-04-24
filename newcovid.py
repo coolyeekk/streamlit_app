@@ -97,7 +97,7 @@ st.markdown("---")
 st.markdown("<h2 style='text-align: center;'>Visualizing top 5 States</h2>",
             unsafe_allow_html=True)
 
-df_state = pd.read_csv("https://github.com/MoH-Malaysia/covid19-public/blob/main/epidemic/clusters.csv")
+df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 df2 = df_state.sort_values('cases_total', ascending=False).reset_index(drop=True)
 
 # Display the sorted data frame
