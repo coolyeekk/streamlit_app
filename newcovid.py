@@ -98,13 +98,13 @@ st.markdown("---")
 df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 
 # Define options for state dropdown menu
-state_options = sorted(list(df_state['state'].unique()))
+state_options = sorted(list(df_state['district'].unique()))
 
 # Create state dropdown menu
 state_selected = st.selectbox('Select a state:', state_options)
 
 # Filter data for the selected state
-state_data = df_state[df_state['state'] == state_selected]
+state_data = df_state[df_state['district'] == state_selected]
 
 # Display the COVID-19 stats for the selected state
 st.write(f"**{state_selected}**")
