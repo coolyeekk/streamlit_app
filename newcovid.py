@@ -141,22 +141,22 @@ new_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases
 # Display Total Cases Pie Chart
 fig1 = go.Figure(data=[total_cases])
 fig1.update_layout(title='COVID-19 Total Cases by State')
-st.plotly_chart(fig1)
+st.plotly_chart(fig1, use_container_width=True)
 
 # Display Total Recovered Pie Chart
 fig2 = go.Figure(data=[total_recovered])
 fig2.update_layout(title='COVID-19 Total Recovered by State')
-st.plotly_chart(fig2)
+st.plotly_chart(fig2, use_container_width=True)
 
 # Display Total Deaths Pie Chart
 fig3 = go.Figure(data=[total_deaths])
 fig3.update_layout(title='COVID-19 Total Deaths by State')
-st.plotly_chart(fig3)
+st.plotly_chart(fig3, use_container_width=True)
 
 # Display New Cases Pie Chart
 fig4 = go.Figure(data=[new_cases])
 fig4.update_layout(title='COVID-19 New Cases by State')
-st.plotly_chart(fig4)
+st.plotly_chart(fig4, use_container_width=True)
 
 
 # Scattermap
