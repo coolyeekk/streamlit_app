@@ -120,7 +120,7 @@ fig = go.Figure(data=[active_cases, new_cases, recovered_cases])
 fig.update_layout(title=f"COVID-19 Cases in {state_selected}", xaxis_title="Date", yaxis_title="Number of Cases")
 
 # Display the plot
-fig.update_layout(height=800)
+fig.update_layout(height=600)
 st.plotly_chart(fig, use_container_width=True)
 
 
