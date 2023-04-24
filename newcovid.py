@@ -95,36 +95,23 @@ st.markdown("---")
 # kpi3
 
 # Read data from MoH Malaysia dataset
-df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv")
+df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 
-# Sort data by number of active cases
-df2 = df_state.sort_values('cases_active', ascending=False).reset_index(drop=True)
+# Define options for state dropdown menu
+state_options = sorted(list(df_state['state'].unique()))
 
-# Take the top 5 states for each category
-top_5_active = df2[['state', 'cases_active']][:5]
-top_5_new = df2[['state', 'cases_new']][:5]
-top_5_recovered = df2[['state', 'cases_recovered']][:5]
+# Create state dropdown menu
+state_selected = st.selectbox('Select a state:', state_options)
 
-# Create a bar chart to visualize top 5 states by active cases, deaths, and recovered cases
-fig = go.Figure(data=[
-    go.Bar(name='Active Cases',
-           x=top_5_active['state'],
-           y=top_5_active['cases_active']),
-    go.Bar(name='New',
-           x=top_5_new['state'],
-           y=top_5_new['cases_new']),
-    go.Bar(name='Recovered',
-           x=top_5_recovered['state'],
-           y=top_5_recovered['cases_recovered'])
-])
+# Filter data for the selected state
+state_data = df_state[df_state['state'] == state_selected]
 
-# Set title and axis labels for the chart
-fig.update_layout(title='Top 5 States with Most COVID-19 Cases',
-                   xaxis_title='States',
-                   yaxis_title='Number of Cases')
-
-# Display the chart in Streamlit app
-st.plotly_chart(fig, use_container_width=True)
+# Display the COVID-19 stats for the selected state
+st.write(f"**{state_selected}**")
+st.write("Total Cases: ", state_data['cases_total'].values[0])
+st.write("Active Cases: ", state_data['cases_active'].values[0])
+st.write("Deaths: ", state_data['deaths'].values[0])
+st.write("Recovered: ", state_data['recovered'].values[0])
 
 
 first_chart, second_chart = st.beta_columns(2)
