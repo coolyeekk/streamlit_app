@@ -159,39 +159,6 @@ fig4.update_layout(title='COVID-19 New Cases by State')
 fig4.show()
 
 
-first_chart, second_chart = st.beta_columns(2)
-
-with first_chart:
-    st.markdown("<h3 style='text-align: center;'>Total Confirmed Cases</h3>",
-                unsafe_allow_html=True)
-    fig = px.pie(df2, values=df2["cases_import"][:5],
-                 names=df2['state'][:5])
-    st.plotly_chart(fig)
-
-with second_chart:
-    st.markdown("<h3 style='text-align: center;'>Total Recovered Cases</h3>",
-                unsafe_allow_html=True)
-    fig = px.pie(df2, values=df2["cases_recovered"][:5],
-                 names=df2['state'][:5])
-    st.plotly_chart(fig)
-
-
-first_chart, second_chart = st.beta_columns(2)
-
-with first_chart:
-    st.markdown("<h3 style='text-align: center;'>Total Active Cases</h3>",
-                unsafe_allow_html=True)
-    fig = px.pie(df2, values=df2["cases_active"][:5],
-                 names=df2['state'][:5])
-    st.plotly_chart(fig)
-
-with second_chart:
-    st.markdown("<h3 style='text-align: center;'>Total Deceased Cases</h3>",
-                unsafe_allow_html=True)
-    fig = px.pie(df2, values=df2["cases_new"][:5],
-                 names=df2['state'][:5])
-    st.plotly_chart(fig)
-
 # Scattermap
 lat_lon = pd.read_csv("lat_lon_india.csv")
 df.drop(0, axis=0, inplace=True)
