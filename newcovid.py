@@ -148,7 +148,7 @@ fig.update_layout(title='COVID-19 Cases by State')
 fig.update_traces(hole=.4)
 
 # Display the plot
-st.plotly_chart(fig)
+st.plotly_chart(fig, use_container_width=True)
 
 
 first_chart, second_chart = st.beta_columns(2)
