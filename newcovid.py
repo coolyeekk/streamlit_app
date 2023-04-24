@@ -122,19 +122,8 @@ fig.update_layout(title=f"COVID-19 Cases in {state_selected}", xaxis_title="Date
 st.plotly_chart(fig, use_container_width=True)
 
 # Pie Chart
-# Read data from MoH Malaysia dataset
-df_state1 = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv")
-
-# Define options for state dropdown menu
-state_options1 = sorted(list(df_state1['state'].unique()))
-
-# Create state dropdown menu
-state_selected1 = st.selectbox('Select a state:', state_options1)
-
-# Filter data for the selected state
-state_data = df_state1[df_state1['state'] == state_selected1]
 # Group data by state and calculate the sum of cases, recoveries, deaths, and new cases
-state_grouped = df_state1.groupby('state').agg({'cases_new': 'sum', 'cases_active': 'sum', 'cases_recovered': 'sum', 'cases_death': 'sum'}).reset_index()
+state_grouped = df_state.groupby('state').agg({'cases_new': 'sum', 'cases_active': 'sum', 'cases_recovered': 'sum', 'cases_death': 'sum'}).reset_index()
 state_grouped = state_grouped.sort_values('cases_new', ascending=False).head(5)
 
 # Create pie chart data for each case type
