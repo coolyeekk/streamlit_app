@@ -16,3 +16,4 @@ protobuf==3.19.4
 seaborn==0.11.2
 streamlit_plotly_events==0.0.6
 tabulate==0.9.0
+folium==0.11.1
