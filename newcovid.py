@@ -133,6 +133,7 @@ state_grouped = df_clusters.groupby('district').agg({'cases_total': 'sum', 'reco
 state_grouped = state_grouped.sort_values('cases_total', ascending=False).head(5)
 
 # Create pie chart data for each case type
+state_grouped['district_short'] = state_grouped['district'].str.replace(' ', '<br>')
 total_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases_total'], name='Total Cases')
 total_recovered = go.Pie(labels=state_grouped['district'], values=state_grouped['recovered'], name='Total Recovered')
 total_deaths = go.Pie(labels=state_grouped['district'], values=state_grouped['deaths'], name='Total Deaths')
