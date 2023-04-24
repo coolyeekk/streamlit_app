@@ -139,39 +139,27 @@ total_deaths = go.Pie(labels=state_grouped['district'], values=state_grouped['de
 new_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases_new'], name='New Cases')
 
 # Display Total Cases Pie Chart
-with st.beta_container():
-    st.write("COVID-19 Total Cases by State")
-    fig = go.Figure(data=[total_cases], layout=go.Layout({'width': 800, 'height': 800, 'margin': {'t': 0, 'b': 0, 'l': 0, 'r': 0},
-                                                          'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
-                                                          'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
-    st.plotly_chart(fig)
+fig1 = go.Figure(data=[total_cases])
+fig1.update_layout(title='COVID-19 Total Cases by State')
+st.plotly_chart(fig1)
 
 # Display Total Recovered Pie Chart
-with st.beta_container():
-    st.write("COVID-19 Total Recovered by State")
-    col1, col2 = st.beta_columns([2, 5])
-    col1.markdown("&nbsp;")
-    col2.plotly_chart(go.Figure(data=[total_recovered], layout={'width': 800, 'height': 800, 'margin': {'t': 0, 'b': 0, 'l': 0, 'r': 0},
-                                                                  'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
-                                                                  'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
+fig2 = go.Figure(data=[total_recovered])
+fig2.update_layout(title='COVID-19 Total Recovered by State')
+st.plotly_chart(fig2)
 
 # Display Total Deaths Pie Chart
-with st.beta_container():
-    st.write("COVID-19 Total Deaths by State")
-    col1, col2 = st.beta_columns([2, 5])
-    col1.markdown("&nbsp;")
-    col2.plotly_chart(go.Figure(data=[total_deaths], layout={'width': 800, 'height': 800, 'margin': {'t': 0, 'b': 0, 'l': 0, 'r': 0},
-                                                              'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
-                                                              'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
+fig3 = go.Figure(data=[total_deaths])
+fig3.update_layout(title='COVID-19 Total Deaths by State')
+st.plotly_chart(fig3)
 
 # Display New Cases Pie Chart
-with st.beta_container():
-    st.write("COVID-19 New Cases by State")
-    col1, col2 = st.beta_columns([2, 5])
-    col1.markdown("&nbsp;")
-    col2.plotly_chart(go.Figure(data=[new_cases], layout={'width': 800, 'height': 800, 'margin': {'t': 0, 'b': 0, 'l': 0, 'r': 0},
-                                                           'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
-                                                           'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
+fig4 = go.Figure(data=[new_cases])
+fig4.update_layout(title='COVID-19 New Cases by State')
+st.plotly_chart(fig4)
+
+
+
 # Scattermap
 lat_lon = pd.read_csv("lat_lon_india.csv")
 df.drop(0, axis=0, inplace=True)
