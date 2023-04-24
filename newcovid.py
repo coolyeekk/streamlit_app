@@ -121,6 +121,43 @@ fig.update_layout(title=f"COVID-19 Cases in {state_selected}", xaxis_title="Date
 # Display the plot
 st.plotly_chart(fig, use_container_width=True)
 
+# Group data by state and calculate the sum of cases, recoveries, deaths, and new cases
+state_grouped = df_state.groupby('state').agg({'cases_new': 'sum', 'cases_active': 'sum', 'cases_recovered': 'sum', 'cases_death': 'sum'}).reset_index()
+state_grouped = state_grouped.sort_values('cases_new', ascending=False).head(5)
+
+# Create pie chart data for each case type
+total_cases = go.Pie(labels=state_grouped['state'], values=state_grouped['cases_active'], name='Total Cases')
+total_recovered = go.Pie(labels=state_grouped['state'], values=state_grouped['cases_recovered'], name='Total Recovered')
+total_deaths = go.Pie(labels=state_grouped['state'], values=state_grouped['cases_death'], name='Total Deaths')
+new_cases = go.Pie(labels=state_grouped['state'], values=state_grouped['cases_new'], name='New Cases')
+
+# Create figure layout and add pie chart data
+fig = make_subplots(rows=2, cols=2, specs=[[{'type':'domain'}, {'type':'domain'}], [{'type':'domain'}, {'type':'domain'}]])
+fig.add_trace(total_cases, 1, 1)
+fig.add_trace(total_recovered, 1, 2)
+fig.add_trace(total_deaths, 2, 1)
+fig.add_trace(new_cases, 2, 2)
+fig.update_layout(title='COVID-19 Cases by State')
+fig.update_traces(hole=.4)
+
+# Display the plot and line graph
+st.plotly_chart(fig)
+
+# Group data by date and calculate the sum of active cases, new cases, and recovered cases
+date_data = state_data.groupby('date').sum().reset_index()
+
+# Create plot data for each case type
+active_cases = go.Scatter(x=date_data['date'], y=date_data['cases_active'], name='Active Cases')
+new_cases = go.Scatter(x=date_data['date'], y=date_data['cases_new'], name='New Cases')
+recovered_cases = go.Scatter(x=date_data['date'], y=date_data['cases_recovered'], name='Recovered Cases')
+
+# Create figure layout and add plot data
+fig2 = go.Figure(data=[active_cases, new_cases, recovered_cases])
+fig2.update_layout(title=f"COVID-19 Cases in {state_selected}", xaxis_title="Date", yaxis_title="Number of Cases")
+
+# Display the plot
+st.plotly_chart(fig2)
+
 
 first_chart, second_chart = st.beta_columns(2)
 
