@@ -170,3 +170,22 @@ with st.beta_container():
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
 
+# read the dataset (assuming it has columns for state, latitude, longitude, and number of cases)
+data = pd.read_csv("covid19_cases_by_state.csv")
+
+# create a Streamlit map component with Folium
+st_map = folium.Map(location=[4.2105, 101.9758], zoom_start=6)
+
+# loop through each state and add a marker to represent the number of cases
+for i, row in data.iterrows():
+    folium.CircleMarker(
+        location=[row["latitude"], row["longitude"]],
+        radius=row["number_of_cases"] / 1000,
+        fill=True,
+        fill_color='red',
+        color='red',
+        tooltip=row["state"] + ": " + str(row["number_of_cases"]) + " cases",
+    ).add_to(st_map)
+
+# display the map in Streamlit
+st.write(st_map)
