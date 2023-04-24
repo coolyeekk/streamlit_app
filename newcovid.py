@@ -144,8 +144,8 @@ with st.beta_container():
     col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[total_cases], layout={'width': 800, 'height': 800, 'margin': {'t': 0, 'b': 0, 'l': 0, 'r': 0},
-                                                           'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
-                                                           'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
+                                                              'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
+                                                              'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
 
 # Display Total Recovered Pie Chart
 with st.beta_container():
@@ -153,8 +153,8 @@ with st.beta_container():
     col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[total_recovered], layout={'width': 800, 'height': 800, 'margin': {'t': 0, 'b': 0, 'l': 0, 'r': 0},
-                                                           'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
-                                                           'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
+                                                                  'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
+                                                                  'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
 
 # Display Total Deaths Pie Chart
 with st.beta_container():
@@ -162,8 +162,9 @@ with st.beta_container():
     col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[total_deaths], layout={'width': 800, 'height': 800, 'margin': {'t': 0, 'b': 0, 'l': 0, 'r': 0},
-                                                           'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
-                                                           'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
+                                                              'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
+                                                              'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
+
 # Display New Cases Pie Chart
 with st.beta_container():
     st.write("COVID-19 New Cases by State")
@@ -172,7 +173,6 @@ with st.beta_container():
     col2.plotly_chart(go.Figure(data=[new_cases], layout={'width': 800, 'height': 800, 'margin': {'t': 0, 'b': 0, 'l': 0, 'r': 0},
                                                            'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
                                                            'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
-
 # Scattermap
 lat_lon = pd.read_csv("lat_lon_india.csv")
 df.drop(0, axis=0, inplace=True)
