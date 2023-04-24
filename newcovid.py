@@ -138,17 +138,25 @@ total_recovered = go.Pie(labels=state_grouped['district'], values=state_grouped[
 total_deaths = go.Pie(labels=state_grouped['district'], values=state_grouped['deaths'], name='Total Deaths')
 new_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases_new'], name='New Cases')
 
-# Create figure layout and add pie chart data
-fig = make_subplots(rows=2, cols=2, specs=[[{'type':'domain'}, {'type':'domain'}], [{'type':'domain'}, {'type':'domain'}]])
-fig.add_trace(total_cases, 1, 1)
-fig.add_trace(total_recovered, 1, 2)
-fig.add_trace(total_deaths, 2, 1)
-fig.add_trace(new_cases, 2, 2)
-fig.update_layout(title='COVID-19 Cases by State')
-fig.update_traces(hole=.4)
+# Display Total Cases Pie Chart
+fig1 = go.Figure(data=[total_cases])
+fig1.update_layout(title='COVID-19 Total Cases by State')
+fig1.show()
 
-# Display the plot
-st.plotly_chart(fig, use_container_width=True)
+# Display Total Recovered Pie Chart
+fig2 = go.Figure(data=[total_recovered])
+fig2.update_layout(title='COVID-19 Total Recovered by State')
+fig2.show()
+
+# Display Total Deaths Pie Chart
+fig3 = go.Figure(data=[total_deaths])
+fig3.update_layout(title='COVID-19 Total Deaths by State')
+fig3.show()
+
+# Display New Cases Pie Chart
+fig4 = go.Figure(data=[new_cases])
+fig4.update_layout(title='COVID-19 New Cases by State')
+fig4.show()
 
 
 first_chart, second_chart = st.beta_columns(2)
