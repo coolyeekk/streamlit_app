@@ -95,23 +95,22 @@ st.markdown("---")
 # kpi3
 
 # Read data from MoH Malaysia dataset
-df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
+df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv")
 
 # Define options for state dropdown menu
-district_options = sorted(list(df_state['district'].unique()))
+state_options = sorted(list(df_state['state'].unique()))
 
 # Create state dropdown menu
-district_selected = st.selectbox('Select a district:', district_options)
+state_selected = st.selectbox('Select a state:', state_options)
 
 # Filter data for the selected state
-district_data = df_state[df_state['district'] == district_selected]
+state_data = df_state[df_state['state'] == state_selected]
 
 # Display the COVID-19 stats for the selected state
 st.write(f"**{state_selected}**")
-st.write("Total Cases: ", state_data['cases_total'].values[0])
 st.write("Active Cases: ", state_data['cases_active'].values[0])
-st.write("Deaths: ", state_data['deaths'].values[0])
-st.write("Recovered: ", state_data['recovered'].values[0])
+st.write("New Cases: ", state_data['cases_new'].values[0])
+st.write("Recovered: ", state_data['cases_recovered'].values[0])
 
 
 first_chart, second_chart = st.beta_columns(2)
