@@ -143,7 +143,7 @@ with st.beta_container():
     st.write("COVID-19 Total Cases by State")
     col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
-    col2.plotly_chart(go.Figure(data=[total_cases], layout={'width': 600, 'height': 600}))
+    col2.plotly_chart(go.Figure(data=[total_cases], layout={'width': 1000, 'height': 1000}))
 
 # Display Total Recovered Pie Chart
 with st.beta_container():
