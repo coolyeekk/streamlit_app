@@ -141,11 +141,10 @@ new_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases
 # Display Total Cases Pie Chart
 with st.beta_container():
     st.write("COVID-19 Total Cases by State")
-    col1, col2 = st.beta_columns([2, 5])
-    col1.markdown("&nbsp;")
-    col2.plotly_chart(go.Figure(data=[total_cases], layout={'width': 800, 'height': 800, 'margin': {'t': 0, 'b': 0, 'l': 0, 'r': 0},
-                                                              'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
-                                                              'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
+    fig = go.Figure(data=[total_cases], layout=go.Layout({'width': 800, 'height': 800, 'margin': {'t': 0, 'b': 0, 'l': 0, 'r': 0},
+                                                          'plot_bgcolor': 'rgba(0,0,0,0)', 'paper_bgcolor': 'rgba(0,0,0,0)',
+                                                          'domain': {'x': [0, 0.8], 'y': [0, 1]}}))
+    st.plotly_chart(fig)
 
 # Display Total Recovered Pie Chart
 with st.beta_container():
