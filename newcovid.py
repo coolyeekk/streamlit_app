@@ -142,7 +142,6 @@ new_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases
 with st.beta_container():
     st.write("COVID-19 Total Cases by State")
     col1 = st.beta_columns([2, 5])
-    col1.markdown("&nbsp;")
     col2 = st.beta_columns([2, 10])
     col2.plotly_chart(go.Figure(data=[total_cases], layout={'width': None}))
 
