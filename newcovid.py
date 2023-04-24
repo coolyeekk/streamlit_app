@@ -141,30 +141,30 @@ new_cases = go.Pie(labels=state_grouped['district'], values=state_grouped['cases
 # Display Total Cases Pie Chart
 with st.beta_container():
     st.write("COVID-19 Total Cases by State")
-    col1, col2 = st.beta_columns([10, 5])
+    col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
-    col2.plotly_chart(go.Figure(data=[total_cases]))
+    col2.plotly_chart(go.Figure(data=[total_cases], layout={'width': None}))
 
 # Display Total Recovered Pie Chart
 with st.beta_container():
     st.write("COVID-19 Total Recovered by State")
     col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
-    col2.plotly_chart(go.Figure(data=[total_recovered]))
+    col2.plotly_chart(go.Figure(data=[total_recovered], layout={'width': None}))
 
 # Display Total Deaths Pie Chart
 with st.beta_container():
     st.write("COVID-19 Total Deaths by State")
     col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
-    col2.plotly_chart(go.Figure(data=[total_deaths]))
+    col2.plotly_chart(go.Figure(data=[total_deaths], layout={'width': None}))
 
 # Display New Cases Pie Chart
 with st.beta_container():
     st.write("COVID-19 New Cases by State")
     col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
-    col2.plotly_chart(go.Figure(data=[new_cases]))
+    col2.plotly_chart(go.Figure(data=[new_cases], layout={'width': None}))
 
 
 # Scattermap
