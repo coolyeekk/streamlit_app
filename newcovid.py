@@ -97,20 +97,18 @@ st.markdown("---")
 st.markdown("<h2 style='text-align: center;'>Visualizing top 5 States</h2>",
             unsafe_allow_html=True)
 
-df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv")
-df2 = df_state.sort_values('cases_active', ascending=False).reset_index(drop=True)
-print(df2.head())
-
+df_state = pd.read_csv("https://github.com/MoH-Malaysia/covid19-public/blob/main/epidemic/clusters.csv")
+df2 = df_state.sort_values('cases_total', ascending=False).reset_index(drop=True)
 
 # Display the sorted data frame
 
 fig = go.Figure(data=[
     go.Bar(name='Active Cases',
-                x=df2['state'][:5], y=df2['cases_active'][:5]),
+                x=df2['state'][:5], y=df2['cases_total'][:5]),
     go.Bar(name='Deaths',
-                x=df2['state'][:5], y=df2['cases_cluster'][:5]),
+                x=df2['state'][:5], y=df2['deaths'][:5]),
     go.Bar(name='Recovered',
-                x=df2['state'][:5], y=df2['cases_recovered'][:5]), ])
+                x=df2['state'][:5], y=df2['recovered'][:5]), ])
 st.plotly_chart(fig, use_container_width=True)
 
 
