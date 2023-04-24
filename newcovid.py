@@ -132,7 +132,7 @@ first_chart, second_chart = st.beta_columns(2)
 with first_chart:
     st.markdown("<h3 style='text-align: center;'>Total Confirmed Cases</h3>",
                 unsafe_allow_html=True)
-    fig = px.pie(df2, values=df2["cases_total"][:5],
+    fig = px.pie(df2, values=df2["cases_agecat"][:5],
                  names=df2['state'][:5])
     st.plotly_chart(fig)
 
