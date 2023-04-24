@@ -98,12 +98,12 @@ st.markdown("---")
 df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv")
 
 # Sort data by number of active cases
-df2 = df_state.sort_values('cases_total', ascending=False).reset_index(drop=True)
+df2 = df_state.sort_values('cases_active', ascending=False).reset_index(drop=True)
 
 # Create a bar chart to visualize top 5 states by active cases, deaths, and recovered cases
 fig = go.Figure(data=[
     go.Bar(name='Active Cases',
-                x=df2['state'][:5], y=df2['cases_total'][:5]),
+                x=df2['state'][:5], y=df2['cases_active'][:5]),
     go.Bar(name='Deaths',
                 x=df2['state'][:5], y=df2['cases_new'][:5]),
     go.Bar(name='Recovered',
