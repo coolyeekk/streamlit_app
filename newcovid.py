@@ -101,8 +101,6 @@ df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-p
 df2 = df_state.sort_values('cases_active', ascending=False).reset_index(drop=True)
 
 # Display the sorted data frame
-print(df_sorted.head())
-
 
 fig = go.Figure(data=[
     go.Bar(name='Confirmed',
