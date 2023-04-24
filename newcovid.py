@@ -75,19 +75,19 @@ first_chart, second_chart = st.beta_columns(2)
 with first_chart:
     fig = px.line(df1, x=pd.to_datetime(df1["date_announced"]).dt.strftime('%b %d %Y'), 
               y=["cases_active", "recovered"], 
-              title="Total New Case vs Test out Positivity Rate",
+              title="Total active cases and recovered",
               color_discrete_sequence=["blue", "green"])
 
-    fig.update_layout(height=1000)
+    fig.update_layout(height=800)
     st.plotly_chart(fig, use_container_width=True)
 
 with second_chart:
     fig = px.line(df1, x=pd.to_datetime(df1["date_announced"]).dt.strftime('%b %d %Y'),
               y=["tests", "cases_total"],
-              title="Total in ICU and Deaths",
+              title="Total tests and cases",
               color_discrete_sequence=["blue", "green"])
 
-    fig.update_layout(height=1000)
+    fig.update_layout(height=800)
     st.plotly_chart(fig, use_container_width=True)
 
 st.markdown("---")
@@ -97,15 +97,20 @@ st.markdown("---")
 st.markdown("<h2 style='text-align: center;'>Visualizing top 5 States</h2>",
             unsafe_allow_html=True)
 
-df2 = df[1:].sort_values('Confirmed', ascending=False)
+df_state = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv")
+df2 = df_state.sort_values('cases_active', ascending=False).reset_index(drop=True)
+
+# Display the sorted data frame
+print(df_sorted.head())
+
 
 fig = go.Figure(data=[
     go.Bar(name='Confirmed',
-                x=df2['State'][:5], y=df2['Confirmed'][:5]),
+                x=df2['state'][:5], y=df2['cases_active'][:5]),
     go.Bar(name='Deaths',
-                x=df2['State'][:5], y=df2['Deaths'][:5]),
+                x=df2['state'][:5], y=df2['cases_cluster'][:5]),
     go.Bar(name='Recovered',
-                x=df2['State'][:5], y=df2['Recovered'][:5]), ])
+                x=df2['state'][:5], y=df2['cases_recovered'][:5]), ])
 st.plotly_chart(fig, use_container_width=True)
 
 
