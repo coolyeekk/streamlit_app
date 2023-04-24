@@ -4,6 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
 from plotly.subplots import make_subplots
+import folium
 
 df = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 df.drop(["cluster", "district", "date_announced","date_last_onset", "category", "status",
@@ -161,26 +162,10 @@ with st.beta_container():
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[total_deaths], layout={'width': None}))
 
-# Display New Cases Pie Chart
+# Display Active Cases Pie Chart
 with st.beta_container():
     st.write("COVID-19 Active Cases by State")
     col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
 
-
-# Scattermap
-lat_lon = pd.read_csv("lat_lon_india.csv")
-df.drop(0, axis=0, inplace=True)
-df.reset_index(drop=True, inplace=True)
-df["lat"] = lat_lon['latitude']
-df["lon"] = lat_lon['longitude']
-
-fig = px.scatter_mapbox(df, lat="lat", lon="lon", hover_name="State", hover_data=["Confirmed", "Recovered", "Deaths", "Active"],
-                        color_discrete_sequence=["darkblue"], zoom=4, height=700)
-
-fig.update_layout(mapbox_style="open-street-map")
-fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-st.markdown("<h2 style='text-align: center;'>State-wise detailed Scattermap</h2>",
-            unsafe_allow_html=True)
-st.plotly_chart(fig, use_container_width=True)
