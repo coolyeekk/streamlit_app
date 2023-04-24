@@ -110,7 +110,7 @@ fig = go.Figure(data=[
     go.Bar(name='Active Cases',
            x=top_5_active['state'],
            y=top_5_active['cases_active']),
-    go.Bar(name='Deaths',
+    go.Bar(name='New',
            x=top_5_new['state'],
            y=top_5_new['cases_new']),
     go.Bar(name='Recovered',
@@ -132,15 +132,15 @@ first_chart, second_chart = st.beta_columns(2)
 with first_chart:
     st.markdown("<h3 style='text-align: center;'>Total Confirmed Cases</h3>",
                 unsafe_allow_html=True)
-    fig = px.pie(df2, values=df2["Confirmed"][:5],
-                 names=df2['State'][:5])
+    fig = px.pie(df2, values=df2["cases_total"][:5],
+                 names=df2['state'][:5])
     st.plotly_chart(fig)
 
 with second_chart:
     st.markdown("<h3 style='text-align: center;'>Total Recovered Cases</h3>",
                 unsafe_allow_html=True)
-    fig = px.pie(df2, values=df2["Recovered"][:5],
-                 names=df2['State'][:5])
+    fig = px.pie(df2, values=df2["cases_recovered"][:5],
+                 names=df2['state'][:5])
     st.plotly_chart(fig)
 
 
@@ -149,15 +149,15 @@ first_chart, second_chart = st.beta_columns(2)
 with first_chart:
     st.markdown("<h3 style='text-align: center;'>Total Active Cases</h3>",
                 unsafe_allow_html=True)
-    fig = px.pie(df2, values=df2["Active"][:5],
-                 names=df2['State'][:5])
+    fig = px.pie(df2, values=df2["cases_active"][:5],
+                 names=df2['state'][:5])
     st.plotly_chart(fig)
 
 with second_chart:
     st.markdown("<h3 style='text-align: center;'>Total Deceased Cases</h3>",
                 unsafe_allow_html=True)
-    fig = px.pie(df2, values=df2["Deaths"][:5],
-                 names=df2['State'][:5])
+    fig = px.pie(df2, values=df2["cases_new"][:5],
+                 names=df2['state'][:5])
     st.plotly_chart(fig)
 
 # Scattermap
