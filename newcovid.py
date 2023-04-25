@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from datetime import datetime
 from plotly.subplots import make_subplots
 import json
+import requests
 
 
 df = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
@@ -171,24 +172,69 @@ with st.beta_container():
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
 
           
+          
+
+# Load the data from the url
+url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_malaysia.csv'
+cases_malaysia = pd.read_csv(url)
+
+# Convert the date column to datetime
+cases_malaysia['date'] = pd.to_datetime(cases_malaysia['date'])
+
+# Compute the age group distribution
+cases_agecat = cases_malaysia.groupby(['date']).apply(
+    lambda x: pd.Series({
+        'child': x.loc[x['age'] <= 11, 'cases_new'].sum(),
+        'adolescent': x.loc[(x['age'] >= 12) & (x['age'] <= 17), 'cases_new'].sum(),
+        'adult': x.loc[(x['age'] >= 18) & (x['age'] <= 59), 'cases_new'].sum(),
+        'elderly': x.loc[x['age'] >= 60, 'cases_new'].sum()
+    })
+).reset_index()
+
+# Rename the date column to 'day'
+cases_agecat = cases_agecat.rename(columns={'date': 'day'})
+
+# Convert the age group names to english
+cases_agecat['cl_age90'] = cases_agecat.apply(lambda x: {
+    'child': 'Children (0-11 years)',
+    'adolescent': 'Adolescents (12-17 years)',
+    'adult': 'Adults (18-59 years)',
+    'elderly': 'Elderly (60 years and above)'
+}[x.name], axis=1)
+
+# Create a new dataframe with the totals for Malaysia
+cases_malaysia_total = cases_malaysia.groupby(['date'])['cases_new'].sum().reset_index()
+cases_malaysia_total = cases_malaysia_total.rename(columns={'cases_new': 'total'})
+
+# Merge the age group distribution with the totals
+cases_agecat = pd.merge(cases_agecat, cases_malaysia_total, on='day')
+
+# Compute the percentage of cases by age group
+cases_agecat['percentage'] = cases_agecat.apply(lambda x: round(100 * x[x.name] / x['total'], 2), axis=1)
+
+# Drop the individual counts and totals columns
+cases_agecat = cases_agecat.drop(['child', 'adolescent', 'adult', 'elderly', 'total'], axis=1)
+
+# Reorder the columns
+cases_agecat = cases_agecat[['day', 'cl_age90', 'percentage']]
+
+# Show the resulting dataframe
+print(cases_agecat)
+
+          
 # State Map          
 url='https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 covid_data = pd.read_csv(url)
-
-# Define data source for Plotly map
 geojson_url = 'https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson'
 geojson = pd.read_json(geojson_url)
 
-# Clean up COVID-19 data
 covid_data['state'] = covid_data['state'].str.title()
 latest_date = str(covid_data['date'].max()).split()[0]
 latest_covid_data = covid_data[covid_data['date'] == latest_date][['state', 'cases_active']].groupby(['state']).sum().reset_index()
 
-# Create choropleth map
 fig = go.Figure(go.Choroplethmapbox(geojson=geojson, locations=latest_covid_data['state'], z=latest_covid_data['cases_active'],
                                      featureidkey='properties.name', colorscale='Blues', zmin=0, zmax=10000))
 
-# Customize map layout
 fig.update_layout(mapbox_style="carto-positron",
                   mapbox_zoom=5, mapbox_center = {"lat": 4.195, "lon": 102.052},
                   margin=dict(l=0,r=0,b=0,t=0))
