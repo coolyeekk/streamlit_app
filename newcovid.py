@@ -177,7 +177,7 @@ geojson_url = 'https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/
 state_geojson = pd.read_json(geojson_url)
 
 # Clean up COVID-19 data
-covid_data.rename(columns={'Date':'Date'}, inplace=True)
+covid_data.rename(columns={'Date':'date'}, inplace=True)
 covid_data['Date'] = pd.to_datetime(covid_data['Date'])
 latest_date = covid_data['Date'].max()
 latest_covid_data = covid_data[covid_data['Date'] == latest_date]
