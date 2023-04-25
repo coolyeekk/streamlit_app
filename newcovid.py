@@ -171,57 +171,8 @@ with st.beta_container():
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
 
-          
-          
 
-# Load the data from the url
-url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_malaysia.csv'
-cases_malaysia = pd.read_csv(url)
 
-# Convert the date column to datetime
-cases_malaysia['date'] = pd.to_datetime(cases_malaysia['date'])
-
-# Compute the age group distribution
-cases_agecat = cases_malaysia.groupby(['date']).apply(
-    lambda x: pd.Series({
-        'child': x.loc[x['age'] <= 11, 'cases_new'].sum(),
-        'adolescent': x.loc[(x['age'] >= 12) & (x['age'] <= 17), 'cases_new'].sum(),
-        'adult': x.loc[(x['age'] >= 18) & (x['age'] <= 59), 'cases_new'].sum(),
-        'elderly': x.loc[x['age'] >= 60, 'cases_new'].sum()
-    })
-).reset_index()
-
-# Rename the date column to 'day'
-cases_agecat = cases_agecat.rename(columns={'date': 'day'})
-
-# Convert the age group names to english
-cases_agecat['cl_age90'] = cases_agecat.apply(lambda x: {
-    'child': 'Children (0-11 years)',
-    'adolescent': 'Adolescents (12-17 years)',
-    'adult': 'Adults (18-59 years)',
-    'elderly': 'Elderly (60 years and above)'
-}[x.name], axis=1)
-
-# Create a new dataframe with the totals for Malaysia
-cases_malaysia_total = cases_malaysia.groupby(['date'])['cases_new'].sum().reset_index()
-cases_malaysia_total = cases_malaysia_total.rename(columns={'cases_new': 'total'})
-
-# Merge the age group distribution with the totals
-cases_agecat = pd.merge(cases_agecat, cases_malaysia_total, on='day')
-
-# Compute the percentage of cases by age group
-cases_agecat['percentage'] = cases_agecat.apply(lambda x: round(100 * x[x.name] / x['total'], 2), axis=1)
-
-# Drop the individual counts and totals columns
-cases_agecat = cases_agecat.drop(['child', 'adolescent', 'adult', 'elderly', 'total'], axis=1)
-
-# Reorder the columns
-cases_agecat = cases_agecat[['day', 'cl_age90', 'percentage']]
-
-# Show the resulting dataframe
-print(cases_agecat)
-
-          
 # State Map          
 url='https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 covid_data = pd.read_csv(url)
