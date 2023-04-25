@@ -173,7 +173,7 @@ with st.beta_container():
 
 
 
-# State Map          
+# State Map
 url='https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 covid_data = pd.read_csv(url)
 geojson_url = 'https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson'
