@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+# import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
 from plotly.subplots import make_subplots
+import json
+
 
 df = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 df.drop(["cluster", "district", "date_announced","date_last_onset", "category", "status",
@@ -175,24 +177,21 @@ covid_data = pd.read_csv(url)
 
 # Define data source for Plotly map
 geojson_url = 'https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson'
-state_geojson = pd.read_json(geojson_url)
+geojson = json.loads(requests.get(geojson_url).text)
 
 # Clean up COVID-19 data
-covid_data['state'] = covid_data['state'].str.title() # Ensure consistent title case formatting
-latest_covid_data = covid_data[['state', 'cases_new']].groupby(['state']).sum().reset_index()
+covid_data['State'] = covid_data['State'].str.title()
+latest_date = str(covid_data['date'].max()).split()[0]
+latest_covid_data = covid_data[covid_data['date'] == latest_date][['State', 'cases_new']].groupby(['State']).sum().reset_index()
 
-# Create plotly map
-fig = px.choropleth(latest_covid_data,                          
-                    geojson=state_geojson,
-                    featureidkey='properties.name',
-                    locations='state',            
-                    color='cases_new',     
-                    color_continuous_scale='Blues',
-                    range_color=(0, 10000),
-                    labels={'cases_new':'New Cases'})
+# Create choropleth map
+fig = go.Figure(go.Choroplethmapbox(geojson=geojson, locations=latest_covid_data['State'], z=latest_covid_data['cases_new'],
+                                     featureidkey='properties.name', colorscale='Blues', zmin=0, zmax=10000))
 
 # Customize map layout
-fig.update_layout(margin=dict(l=0,r=0,b=0,t=0))
+fig.update_layout(mapbox_style="carto-positron",
+                  mapbox_zoom=5, mapbox_center = {"lat": 4.195, "lon": 102.052},
+                  margin=dict(l=0,r=0,b=0,t=0))
 
-# Display plotly map in Streamlit
+# Display map in Streamlit
 st.plotly_chart(fig)
