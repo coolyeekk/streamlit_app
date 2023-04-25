@@ -174,19 +174,16 @@ url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidem
 covid_data = pd.read_csv(url)
 
 # Trim data to include only relevant columns
-covid_data = covid_data[["date", "state", "cases_active"]]
+covid_data = covid_data[["state", "cases_active"]]
 
 # Rename columns
-covid_data.rename(columns={"date":"Date", "state":"state"}, inplace=True)
-
-# Cast Date column to datetime for easier manipulation
-covid_data["Date"] = pd.to_datetime(covid_data["Date"])
+covid_data.rename(columns={"state":"State", "cases_active":"Active Cases"}, inplace=True)
 
 # Print column names
 st.write(covid_data.columns)
 
 # Get latest data by state
-latest_data = covid_data.groupby("state").last().reset_index()
+latest_data = covid_data.groupby("State").last().reset_index()
 
 # Load state boundaries
 geo_url = "https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson"
@@ -195,9 +192,9 @@ state_geojson = pd.read_json(geo_url)
 # Create choropleth map with Plotly Express
 fig = px.choropleth(latest_data, 
                     geojson=state_geojson, 
-                    featureidkey="name",
-                    locations="state", 
-                    color="cases_active",
+                    featureidkey="properties.name",
+                    locations="State", 
+                    color="Active Cases",
                     color_continuous_scale="Blues",
                     range_color=(0,1000))
 
@@ -210,3 +207,4 @@ fig.update_layout(coloraxis_colorbar=dict(title="Active Cases",
 
 # Display plotly map in Streamlit
 st.plotly_chart(fig)
+
