@@ -178,14 +178,14 @@ geojson_url = 'https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/
 state_geojson = pd.read_json(geojson_url)
 
 # Clean up COVID-19 data
-covid_data['State'] = covid_data['State'].str.title() # Ensure consistent title case formatting
-latest_covid_data = covid_data[['State', 'cases_new']].groupby(['State']).sum().reset_index()
+covid_data['state'] = covid_data['state'].str.title() # Ensure consistent title case formatting
+latest_covid_data = covid_data[['state', 'cases_new']].groupby(['state']).sum().reset_index()
 
 # Create plotly map
 fig = px.choropleth(latest_covid_data,                          
                     geojson=state_geojson,
                     featureidkey='properties.name',
-                    locations='State',            
+                    locations='state',            
                     color='cases_new',     
                     color_continuous_scale='Blues',
                     range_color=(0, 10000),
