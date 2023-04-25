@@ -169,17 +169,32 @@ with st.beta_container():
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
 
 # State Map
-
-
-# Load data
 url='https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 df = pd.read_csv(url)
 
+# Define data source for Plotly map
+geojson_url = 'https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson'
+state_geojson = pd.read_json(geojson_url)
+
+# Clean up COVID-19 data
+covid_data.rename(columns={'date':'Date'}, inplace=True)
+covid_data['Date'] = pd.to_datetime(covid_data['Date'])
+latest_date = covid_data['Date'].max()
+latest_covid_data = covid_data[covid_data['Date'] == latest_date]
+latest_covid_data[['State', 'cases_new']] 
+
 # Create plotly map
-fig =px.choropleth(df,                          
-                    geojson='https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson',
-                    locations='state',            
+fig = px.choropleth(latest_covid_data,                          
+                    geojson=state_geojson,
+                    featureidkey='properties.name',
+                    locations='State',            
                     color='cases_new',     
-                    color_continuous_scale='Blues',range_color=(0, 10000))
+                    color_continuous_scale='Blues',
+                    range_color=(0, 10000),
+                    labels={'cases_new':'New Cases'})
+
+# Customize map layout
+fig.update_layout(margin=dict(l=0,r=0,b=0,t=0))
+
 # Display plotly map in Streamlit
 st.plotly_chart(fig, use_container_width=True)
