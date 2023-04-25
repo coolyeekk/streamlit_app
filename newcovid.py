@@ -182,6 +182,6 @@ fig =px.choropleth(df,
                     color='cases_new',     
                     color_continuous_scale='Blues',range_color=(0, 10000))
 # Display plotly map in Streamlit
-st.plotly_chart(fig)
+st.plotly_chart(fig, use_container_width=True)
 
 st.pyplot()
