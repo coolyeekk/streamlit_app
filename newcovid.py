@@ -176,13 +176,16 @@ url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidem
 df = pd.read_csv(url)
 
 map_data = gpd.read_file('https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson')
+
 merged_df = map_data.merge(df, left_on='name', right_on='state')
 
+# Create the state map using the plot() function of the GeoDataFrame.
 fig, ax = plt.subplots(figsize=(10,10))
 ax.set_aspect('equal')
 merged_df.plot(column='cases_new', cmap='Blues', ax=ax, legend=True)
 plt.title('Number of Confirmed Cases by State')
-plt.show()
+
+st.pyplot()
 
 
 
