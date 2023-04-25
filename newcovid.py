@@ -199,3 +199,4 @@ fig = px.choropleth(latest_data,
 
 # Display plotly map in Streamlit
 st.plotly_chart(fig)
+fig.show()
