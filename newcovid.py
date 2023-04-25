@@ -7,7 +7,6 @@ import plotly.graph_objects as go
 from datetime import datetime
 from plotly.subplots import make_subplots
 
-
 df = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 df.drop(["cluster", "district", "date_announced","date_last_onset", "category", "status",
           "tests", "icu", "summary_bm", "summary_en"], axis=1, inplace=True)
@@ -172,6 +171,7 @@ with st.beta_container():
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
 
 # State Map
+st.set_option('deprecation.showPyplotGlobalUse', False)
 url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 df = pd.read_csv(url)
 
