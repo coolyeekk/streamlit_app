@@ -175,9 +175,8 @@ with st.beta_container():
 url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 df = pd.read_csv(url)
 
-map_data = gpd.read_file('param_geo.csv')
+map_data = gpd.read_file('https://gist.githubusercontent.com/zulkarnine/3124152b9025fdf5ebdc93b7416d59cd/raw/3b3af60b6fb9d9a011c721fbc5eee5ed5c5bdbb1/malaysia-states.geojson')
 merged_df = map_data.merge(df, left_on='name', right_on='state')
-
 
 fig, ax = plt.subplots(figsize=(10,10))
 ax.set_aspect('equal')
