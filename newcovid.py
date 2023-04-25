@@ -170,30 +170,8 @@ with st.beta_container():
 
           
           
-# Get latest data by state
-latest_data = covid_data.groupby("state").last().reset_index()
-st.write(latest_data)
-
-# Load state boundaries
-geo_url = "https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson"
-state_geojson = pd.read_json(geo_url)
-st.write(state_geojson)
-
-# Create choropleth map with Plotly Express
-fig = px.choropleth(latest_data, 
-                    geojson=state_geojson, 
-                    featureidkey="properties.name",
-                    locations="state", 
-                    color="cases_active",
-                    color_continuous_scale="Blues",
-                    range_color=(0,1000))
-
-# Display plotly map in Streamlit
-st.plotly_chart(fig)
-          
-          
-# State Map
-url='https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
+# Load data from URL
+url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 covid_data = pd.read_csv(url)
 
 # Trim data to include only relevant columns
@@ -204,6 +182,9 @@ covid_data.rename(columns={"date":"Date", "state":"state"}, inplace=True)
 
 # Cast Date column to datetime for easier manipulation
 covid_data["Date"] = pd.to_datetime(covid_data["Date"])
+
+# Print column names
+st.write(covid_data.columns)
 
 # Get latest data by state
 latest_data = covid_data.groupby("state").last().reset_index()
