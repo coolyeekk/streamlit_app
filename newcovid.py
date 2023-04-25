@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import geopandas as gpd
+import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
@@ -168,5 +170,20 @@ with st.beta_container():
     col1, col2 = st.beta_columns([2, 5])
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
+
+# State Map
+url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
+df = pd.read_csv(url)
+
+map_data = gpd.read_file('malaysia-states.geojson')
+merged_df = map_data.merge(df, left_on='name', right_on='state')
+
+
+fig, ax = plt.subplots(figsize=(10,10))
+ax.set_aspect('equal')
+merged_df.plot(column='cases_new', cmap='Blues', ax=ax, legend=True)
+plt.title('Number of Confirmed Cases by State')
+plt.show()
+
 
 
