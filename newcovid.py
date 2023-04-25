@@ -186,6 +186,3 @@ merged_df.plot(column='cases_new', cmap='Blues', ax=ax, legend=True)
 plt.title('Number of Confirmed Cases by State')
 
 st.pyplot()
-
-
-
