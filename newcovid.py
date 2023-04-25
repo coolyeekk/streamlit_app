@@ -171,7 +171,6 @@ with st.beta_container():
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
 
 # State Map
-st.set_option('deprecation.showPyplotGlobalUse', False)
 url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 df = pd.read_csv(url)
 
