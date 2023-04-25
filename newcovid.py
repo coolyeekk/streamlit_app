@@ -192,6 +192,7 @@ latest_data = covid_data.groupby("state").last().reset_index()
 # Load state boundaries
 geo_url = "https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson"
 state_geojson = pd.read_json(geo_url)
+st.write(state_geojson)
 
 # Create choropleth map with Plotly Express
 fig = px.choropleth(latest_data, 
