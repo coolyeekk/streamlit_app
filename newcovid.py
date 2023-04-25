@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-import geopandas as gpd
-import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
@@ -171,17 +169,19 @@ with st.beta_container():
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
 
 # State Map
-url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
+
+
+# Load data
+url='https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 df = pd.read_csv(url)
 
-map_data = gpd.read_file('https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson')
-
-merged_df = map_data.merge(df, left_on='name', right_on='state')
-
-# Create the state map using the plot() function of the GeoDataFrame.
-fig, ax = plt.subplots(figsize=(10,10))
-ax.set_aspect('equal')
-merged_df.plot(column='cases_new', cmap='Blues', ax=ax, legend=True)
-plt.title('Number of Confirmed Cases by State')
+# Create plotly map
+fig =px.choropleth(df,                          
+                    geojson='https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson',
+                    locations='state',            
+                    color='cases_new',     
+                    color_continuous_scale='Blues',range_color=(0, 10000))
+# Display plotly map in Streamlit
+st.plotly_chart(fig)
 
 st.pyplot()
