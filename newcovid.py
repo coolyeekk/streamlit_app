@@ -180,12 +180,12 @@ geojson_url = 'https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/
 geojson = pd.read_json(geojson_url)
 
 # Clean up COVID-19 data
-covid_data['State'] = covid_data['State'].str.title()
+covid_data['state'] = covid_data['state'].str.title()
 latest_date = str(covid_data['date'].max()).split()[0]
-latest_covid_data = covid_data[covid_data['date'] == latest_date][['State', 'cases_new']].groupby(['State']).sum().reset_index()
+latest_covid_data = covid_data[covid_data['date'] == latest_date][['state', 'cases_active']].groupby(['state']).sum().reset_index()
 
 # Create choropleth map
-fig = go.Figure(go.Choroplethmapbox(geojson=geojson, locations=latest_covid_data['State'], z=latest_covid_data['cases_new'],
+fig = go.Figure(go.Choroplethmapbox(geojson=geojson, locations=latest_covid_data['state'], z=latest_covid_data['cases_active'],
                                      featureidkey='properties.name', colorscale='Blues', zmin=0, zmax=10000))
 
 # Customize map layout
