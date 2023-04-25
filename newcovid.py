@@ -170,7 +170,7 @@ with st.beta_container():
 
 # State Map
 url='https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
-df = pd.read_csv(url)
+covid_data = pd.read_csv(url)
 
 # Trim data to include only relevant columns
 covid_data = covid_data[["date", "state", "cases_active"]]
