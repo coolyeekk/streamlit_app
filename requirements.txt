@@ -11,7 +11,7 @@ matplotlib==3.5.1
 numpy==1.20.3
 pandas==1.4.1
 Pillow==9.0.1
-plotly==5.5.0
+plotly==5.11.0
 protobuf==3.19.4
 seaborn==0.11.2
 streamlit_plotly_events==0.0.6
