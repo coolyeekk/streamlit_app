@@ -195,7 +195,7 @@ state_geojson = pd.read_json(geo_url)
 # Create choropleth map with Plotly Express
 fig = px.choropleth(latest_data, 
                     geojson=state_geojson, 
-                    featureidkey="properties.name",
+                    featureidkey="name",
                     locations="state", 
                     color="cases_active",
                     color_continuous_scale="Blues",
