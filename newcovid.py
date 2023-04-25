@@ -172,29 +172,30 @@ with st.beta_container():
 url='https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 df = pd.read_csv(url)
 
-# Define data source for Plotly map
-geojson_url = 'https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson'
-state_geojson = pd.read_json(geojson_url)
+# Trim data to include only relevant columns
+covid_data = covid_data[["date", "state", "cases_active"]]
 
-# Clean up COVID-19 data
-covid_data.rename(columns={'Date':'date'}, inplace=True)
-covid_data['Date'] = pd.to_datetime(covid_data['Date'])
-latest_date = covid_data['Date'].max()
-latest_covid_data = covid_data[covid_data['Date'] == latest_date]
-latest_covid_data[['state', 'cases_active']] 
+# Rename columns
+covid_data.rename(columns={"date":"Date", "state":"state"}, inplace=True)
 
-# Create plotly map
-fig = px.choropleth(latest_covid_data,                          
-                    geojson=state_geojson,
-                    featureidkey='properties.name',
-                    locations='state',            
-                    color='cases_active',     
-                    color_continuous_scale='Blues',
-                    range_color=(0, 10000),
-                    labels={'cases_new':'New Cases'})
+# Cast Date column to datetime for easier manipulation
+covid_data["Date"] = pd.to_datetime(covid_data["Date"])
 
-# Customize map layout
-fig.update_layout(margin=dict(l=0,r=0,b=0,t=0))
+# Get latest data by state
+latest_data = covid_data.groupby("state").last().reset_index()
+
+# Load state boundaries
+geo_url = "https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson"
+state_geojson = pd.read_json(geo_url)
+
+# Create choropleth map with Plotly Express
+fig = px.choropleth(latest_data, 
+                    geojson=state_geojson, 
+                    featureidkey="properties.name",
+                    locations="state", 
+                    color="cases_active",
+                    color_continuous_scale="Blues",
+                    range_color=(0,1000))
 
 # Display plotly map in Streamlit
 st.plotly_chart(fig, use_container_width=True)
