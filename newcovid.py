@@ -198,6 +198,6 @@ fig = px.choropleth(latest_data,
                     range_color=(0,1000))
 
 # Display plotly map in Streamlit
-fig.show()
+fig.show(renderer="iframe_connected")
 st.plotly_chart(fig)
 
