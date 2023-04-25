@@ -169,8 +169,7 @@ with st.beta_container():
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
 
           
-          
-# Load data from URL
+# State Map          
 url = 'https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/cases_state.csv'
 covid_data = pd.read_csv(url)
 
@@ -192,7 +191,6 @@ latest_data = covid_data.groupby("state").last().reset_index()
 # Load state boundaries
 geo_url = "https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson"
 state_geojson = pd.read_json(geo_url)
-st.write(state_geojson)
 
 # Create choropleth map with Plotly Express
 fig = px.choropleth(latest_data, 
@@ -202,6 +200,13 @@ fig = px.choropleth(latest_data,
                     color="cases_active",
                     color_continuous_scale="Blues",
                     range_color=(0,1000))
+
+# Update layout to remove colorbar title
+fig.update_layout(coloraxis_colorbar=dict(title="Active Cases", 
+                                          thicknessmode="pixels", 
+                                          thickness=15, 
+                                          lenmode="pixels", 
+                                          len=300))
 
 # Display plotly map in Streamlit
 st.plotly_chart(fig)
