@@ -177,7 +177,7 @@ covid_data = pd.read_csv(url)
 
 # Define data source for Plotly map
 geojson_url = 'https://gist.githubusercontent.com/heiswayi/81a169ab39dcf749c31a/raw/b2b3685f5205aee7c35f0b543201907660fac55e/malaysia.geojson'
-geojson = json.loads(requests.get(geojson_url).text)
+geojson = pd.read_json(geojson_url)
 
 # Clean up COVID-19 data
 covid_data['State'] = covid_data['State'].str.title()
