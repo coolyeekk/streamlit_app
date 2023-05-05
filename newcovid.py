@@ -235,12 +235,12 @@ covid_data['state'] = covid_data['state'].str.title()
 latest_date = str(covid_data['date'].max()).split()[0]
 latest_covid_data = covid_data[covid_data['date'] == latest_date][['state', 'cases_active']].groupby(['state']).sum().reset_index()
 
-fig1 = go.Figure(go.Choroplethmapbox(geojson=geojson, locations=latest_covid_data['state'], z=latest_covid_data['cases_active'],
+fig_map = go.Figure(go.Choroplethmapbox(geojson=geojson, locations=latest_covid_data['state'], z=latest_covid_data['cases_active'],
                                      featureidkey='properties.name', colorscale='Blues', zmin=0, zmax=10000))
 
-fig1.update_layout(mapbox_style="carto-positron",
+fig_map.update_layout(mapbox_style="carto-positron",
                   mapbox_zoom=5, mapbox_center = {"lat": 4.195, "lon": 102.052},
                   margin=dict(l=0,r=0,b=0,t=0))
 
 # Display map in Streamlit
-st.plotly_chart(fig1)
+st.plotly_chart(fig_map)
