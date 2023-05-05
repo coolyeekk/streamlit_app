@@ -171,6 +171,56 @@ with st.beta_container():
     col1.markdown("&nbsp;")
     col2.plotly_chart(go.Figure(data=[active], layout={'width': None}))
 
+# Read case data from a URL and select relevant columns (date, state, cases_new).
+cases_state1 = 'https://raw.githubusercontent.com/coolyeekk/dataset/main/cases_state.csv'
+df2 = pd.read_csv(cases_state1, usecols=['date','state','cases_new'], parse_dates=['date'])
+
+# Replace state codes in the dataframe with their corresponding names using mergeKV dictionary.
+mergeKV = {'Selangor': 'Sel & WP', 'W.P. Kuala Lumpur': 'Sel & WP', 'W.P. Putrajaya': 'Sel & WP'}
+df2.state = df2.state.replace(mergeKV)
+
+# Group by date and state, and calculate the sum of new cases for each group. Then reset the index of the resulting dataframe.
+df2 = df2.groupby(['date','state']).sum().reset_index()
+
+# Filter by cases from April 19, 2021 onwards (start of Phase 2 vaccination).
+df2 = df2[df2.date.dt.date >= pd.Timestamp('2021-04-19').date()]
+
+# Define a helper function to check if the resulting dataframe includes all states.
+def df2IsComplete(df2):
+    odf = df2.copy()
+    dff = df2.groupby(['date', 'state']).sum().unstack(fill_value=0).asfreq('D', fill_value=0).stack().sort_index(level=1).reset_index().sort_values(by=['date', 'state'])
+    dff.date = dff.date.dt.date
+    return len(odf) == len(dff)
+
+# Check if the resulting dataframe includes all states.
+if not df2IsComplete(df2):
+    st.warning('Not all states are included in the data.')
+
+# Create a chart showing COVID-19 case trends by state.
+states = list(df2.state.unique())
+plt.rcParams["font.family"] = "sans-serif"
+plt.rcParams.update({'font.size': 16})
+figure, axes = plt.subplots(4,4, figsize=(30,30), sharey=True)
+figure.set_size_inches([15,15], forward=True)
+figure.suptitle('COVID-19 Case Trends')
+axe = axes.ravel()
+i = 0
+for s in states:
+    temp = df2.copy()
+    temp = temp[temp.state == s]
+    temp.cases_new = (temp.cases_new - temp.cases_new.min()) / (temp.cases_new.max() - temp.cases_new.min()) * 100
+    temp['cases_new_ma'] = temp['cases_new'].rolling(window=7).mean()
+    temp = temp.dropna(how='any')
+    temp['cases_new'].plot(ax=axe[i], legend=None, color='black', linewidth=0.5, alpha=0.5)
+    temp['cases_new_ma'].plot(ax=axe[i], legend=None, color='black')
+    axe[i].set_title(s)
+    i += 1
+plt.setp(axes, xticks=[], yticks=[])
+figure.tight_layout()
+figure.subplots_adjust(top=0.88)
+
+# Display the chart in the Streamlit app.
+st.pyplot(figure)
 
 
 # State Map
