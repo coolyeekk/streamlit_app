@@ -6,7 +6,9 @@ from datetime import datetime
 from plotly.subplots import make_subplots
 import json
 import requests
-
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+from matplotlib.lines import Line2D
 
 df = pd.read_csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/clusters.csv")
 df.drop(["cluster", "district", "date_announced","date_last_onset", "category", "status",
